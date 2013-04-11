@@ -5,6 +5,9 @@ import jinja2.ext
 from jinja2 import nodes
 
 
+__all__ = ['FormFillExtension']
+
+
 class FormFillExtension(jinja2.ext.Extension):
     """Jinja2 extension for filling HTML forms via :mod:`formencode.htmlfill`.
 
@@ -43,6 +46,13 @@ class FormFillExtension(jinja2.ext.Extension):
     """
     tags = frozenset(['formfill'])
 
+    def __init__(self, environment):
+        super(FormFillExtension, self).__init__(environment)
+        environment.extend(
+            formfill_config={},
+            formfill_error_formatters=dict(DEFAULT_ERROR_FORMATTERS),
+        )
+
     def parse(self, parser):
         token = next(parser.stream)
         defaults = parser.parse_expression()
@@ -70,9 +80,13 @@ class FormFillExtension(jinja2.ext.Extension):
                             "not {0!r}".format(errors))
         rv = caller()
         return formencode.htmlfill.render(
-            rv, defaults, errors, error_formatters=self.ERROR_FORMATTERS)
+            rv, defaults, errors,
+            error_formatters=self.environment.formfill_error_formatters,
+            **self.environment.formfill_config)
 
-    ERROR_FORMATTERS = {
-        'default': lambda msg: '<span class="error-message">{0}</span>'
-                               .format(msg),
-    }
+
+DEFAULT_ERROR_FORMATTERS = dict(formencode.htmlfill.default_formatter_dict)
+DEFAULT_ERROR_FORMATTERS.update(
+    default=lambda error: '<span class="error-message">{0}</span>'
+                          .format(formencode.htmlfill.escape_formatter(error)),
+)
