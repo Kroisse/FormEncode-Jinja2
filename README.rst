@@ -20,14 +20,29 @@ You can install it from `PyPI`_::
 Usage
 -----
 
-::
+Simple example in the interactive mode::
 
-   import jinja2
-   import formencode_jinja2
-
-   env = jinja2.Environment(extensions=[formencode_jinja2.formfill])
-   # or if there is already the Jinja environment:
-   env.add_extension(formencode_jinja2.formfill)
+   >>> import jinja2
+   >>> import formencode_jinja2
+   >>> env = jinja2.Environment(extensions=[formencode_jinja2.formfill])
+   >>> # or if there is already the Jinja environment:
+   >>> env.add_extension(formencode_jinja2.formfill)
+   >>> template = '''
+   ... {%- formfill {'username': 'robert', 'email': 'robert153@usrobots.com'}
+   ...        with {'username': 'This name is invalid'} -%}
+   ...     <input type="text" name="username" />
+   ...     <form:error name="username">
+   ...     <input type="password" name="password" />
+   ...     <input type="email" name="email" />
+   ... </form>
+   ... {%- endformfill -%}
+   ... '''
+   >>> print env.from_string(template).render()
+   <input type="text" name="username" class="error" value="robert" />
+       <span class="error-message">This name is invalid</span>
+       <input type="password" name="password" value="" />
+       <input type="email" name="email" value="robert153@usrobots.com" />
+   </form>
 
 
 on `Flask`_::

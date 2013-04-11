@@ -6,6 +6,12 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages  # NOQA
 from setuptools.command.test import test as TestCommand
+import os.path
+
+
+def read_file(filepath):
+    with open(os.path.join(os.path.dirname(__file__), filepath)) as f:
+        return f.read()
 
 
 class PyTest(TestCommand):
@@ -27,6 +33,7 @@ setup(
     author_email='kroisse@gmail.com',
     url='https://github.com/Kroisse/FormEncode-Jinja2',
     description='A Jinja2 extension for filling forms via FormEncode',
+    long_description=read_file('README.rst'),
     license='MIT License',
     keywords='html',
     packages=find_packages(exclude=[]),
