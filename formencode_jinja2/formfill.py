@@ -6,7 +6,39 @@ from jinja2 import nodes
 
 
 class FormFillExtension(jinja2.ext.Extension):
-    """
+    """Jinja2 extension for filling HTML forms via :mod:`formencode.htmlfill`.
+
+    For example, this code::
+
+       {% formfill {'username': 'robert', 'email': 'robert153@usrobots.com'}
+              with {'username': 'This name is invalid'} %}
+       <form action="/register" method="POST">
+           <input type="text" name="username" />
+           <form:error name="username">
+           <input type="password" name="password" />
+           <input type="email" name="email" />
+       </form>
+       {% endformfill %}
+
+    will be rendered like below::
+
+       <form action="/register" method="POST">
+           <input type="text" name="username" class="error" value="robert" />
+           <span class="error-message">This name is invalid</span>
+           <input type="password" name="password" value="" />
+           <input type="email" name="email" value="robert153@usrobots.com" />
+       </form>
+
+
+    :param defaults: a dict-like object that contains default values of
+                     the input field (including ``select`` and ``textarea``)
+                     surrounded in the template tag.
+                     Keys contain a value of ``name`` attribute of the input
+                     field, and values contain its default value.
+    :param errors: a dict-like object that contains messages for
+                   the error of the input fields. this value will also effect
+                   ``class`` attribute of the input field.
+    :returns: rendered forms
 
     """
     tags = frozenset(['formfill'])
