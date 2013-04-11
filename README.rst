@@ -47,7 +47,7 @@ Simple example in the interactive mode:
    </form>
 
 
-on `Flask`_
+on `Flask`_:
 
 .. sourcecode:: python
 
