@@ -20,7 +20,9 @@ You can install it from `PyPI`_::
 Usage
 -----
 
-Simple example in the interactive mode::
+Simple example in the interactive mode:
+
+.. sourcecode:: pycon
 
    >>> import jinja2
    >>> import formencode_jinja2
@@ -45,7 +47,9 @@ Simple example in the interactive mode::
    </form>
 
 
-on `Flask`_::
+on `Flask`_
+
+.. sourcecode:: python
 
    from flask import Flask
    import formencode_jinja2
