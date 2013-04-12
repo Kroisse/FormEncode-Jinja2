@@ -43,6 +43,23 @@ class FormFillExtension(jinja2.ext.Extension):
                    ``class`` attribute of the input field.
     :returns: rendered forms
 
+    This extension provides the additional variables in the Jinja2 environment:
+
+    .. attribute:: jinja2.Environment.formfill_config
+
+       The default rendering configuration of the ``formfill`` tag.
+       This property accepts the same arguments of
+       :func:`formencode.htmlfill.render`, except ``form``, ``defaults``,
+       ``errors`` and ``error_formatters``.
+
+    .. attribute:: jinja2.Environment.formfill_error_formatters
+
+       The mapping of error formatters and its name.
+       Formatters are functions or callable objects that take the error text
+       as a single argument, and returns a formatted text as a string.
+
+       .. seealso:: http://www.formencode.org/en/latest/htmlfill.html#errors
+
     """
     tags = frozenset(['formfill'])
 
