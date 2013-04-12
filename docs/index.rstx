@@ -1,0 +1,94 @@
+.. FormEncode-Jinja2 documentation master file, created by
+   sphinx-quickstart on Fri Apr 12 19:09:22 2013.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+FormEncode-Jinja2
+=================
+
+FormEncode-Jinja2 is a `Jinja2`_ extension for filling HTML forms via `FormEncode`_.
+
+.. _Jinja2: http://jinja.pocoo.org/
+.. _FormEncode: http://www.formencode.org/
+
+
+Installation
+------------
+
+You can install it from `PyPI`_:
+
+.. code-block:: console
+
+   $ pip install FormEncode-Jinja2  # or
+   $ easy_install FormEncode-Jinja2
+
+.. _PyPI: https://pypi.python.org/pypi/FormEncode-Jinja2
+
+
+Basic Usage
+-----------
+
+Simple example in the interactive mode:
+
+.. code-block:: pycon
+
+   >>> import jinja2
+   >>> import formencode_jinja2
+   >>> env = jinja2.Environment(extensions=[formencode_jinja2.formfill])
+   >>> # or if there is already the Jinja environment:
+   >>> env.add_extension(formencode_jinja2.formfill)
+   >>> template = '''
+   ... {%- formfill {'username': 'robert', 'email': 'robert153@usrobots.com'}
+   ...        with {'username': 'This name is invalid'} -%}
+   ...     <input type="text" name="username" />
+   ...     <form:error name="username">
+   ...     <input type="password" name="password" />
+   ...     <input type="email" name="email" />
+   ... </form>
+   ... {%- endformfill -%}
+   ... '''
+   >>> print env.from_string(template).render()
+   <input type="text" name="username" class="error" value="robert" />
+       <span class="error-message">This name is invalid</span>
+       <input type="password" name="password" value="" />
+       <input type="email" name="email" value="robert153@usrobots.com" />
+   </form>
+
+
+`Flask`_
+^^^^^^^^
+
+.. code-block:: python
+
+   from flask import Flask
+   import formencode_jinja2
+
+   app = Flask(__name__)
+   app.jinja_env.add_extension(formencode_jinja2.formfill)
+
+
+.. _Flask: http://flask.pocoo.org/
+
+
+Reference
+---------
+
+.. autoclass:: formencode_jinja2.formfill.FormFillExtension
+
+
+Further Reading
+---------------
+
+.. toctree::
+   :maxdepth: 2
+
+   changes
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

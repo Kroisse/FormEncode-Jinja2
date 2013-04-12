@@ -2,3 +2,5 @@ dist/
 *.egg-info/
 *.pyc
 .tox/
+
+/docs/_build/
