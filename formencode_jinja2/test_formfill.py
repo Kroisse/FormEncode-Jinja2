@@ -137,3 +137,25 @@ def test_configure_formfill_error_formatter(jinja_env):
     </form>'''
     result = jinja_env.from_string(template).render()
     assert result == expected
+
+
+def test_formfill_with_non_ascii_text(jinja_env):
+    template = u'''
+    {% formfill {'username': '박재상', 'twitter': '@psy_oppa'}
+           with {'username': 'Sorry for rocking with 강남스타일'} -%}
+    <form action="account/register" method="POST">
+        <input type="text" name="username" />
+        <form:error name="username">
+        <input type="password" name="password" />
+        <input type="text" name="twitter" />
+    </form>
+    {%- endformfill %}'''
+    expected = u'''
+    <form action="account/register" method="POST">
+        <input type="text" name="username" class="error" value="박재상" />
+        <span class="error-message">Sorry for rocking with 강남스타일</span>
+        <input type="password" name="password" value="" />
+        <input type="text" name="twitter" value="@psy_oppa" />
+    </form>'''
+    result = jinja_env.from_string(template).render()
+    assert result == expected

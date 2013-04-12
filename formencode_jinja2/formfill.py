@@ -102,8 +102,13 @@ class FormFillExtension(jinja2.ext.Extension):
             **self.environment.formfill_config)
 
 
+def default_formatter(error):
+    """Escape the error, and wrap it in a span with class ``error-message``"""
+    quoted = formencode.htmlfill.escape_formatter(error)
+    return u'<span class="error-message">{0}</span>'.format(quoted)
+
+
 DEFAULT_ERROR_FORMATTERS = dict(formencode.htmlfill.default_formatter_dict)
 DEFAULT_ERROR_FORMATTERS.update(
-    default=lambda error: '<span class="error-message">{0}</span>'
-                          .format(formencode.htmlfill.escape_formatter(error)),
+    default=default_formatter,
 )
