@@ -36,6 +36,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
+    'sphinx.ext.extlinks',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -283,4 +284,12 @@ intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
     'formencode': ('http://www.formencode.org/en/latest', None),
     'jinja2': ('http://jinja.pocoo.org/docs/', None),
+}
+
+
+extlinks = {
+    'issue': ('https://github.com/Kroisse/FormEncode-Jinja2/issues/%s',
+              'issue #'),
+    'pull': ('https://github.com/Kroisse/FormEncode-Jinja2/pull/%s',
+             'pull request #'),
 }
