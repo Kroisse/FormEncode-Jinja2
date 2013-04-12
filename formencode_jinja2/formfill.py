@@ -11,7 +11,9 @@ __all__ = ['FormFillExtension']
 class FormFillExtension(jinja2.ext.Extension):
     """Jinja2 extension for filling HTML forms via :mod:`formencode.htmlfill`.
 
-    For example, this code::
+    For example, this code:
+
+    .. code-block:: html+jinja
 
        {% formfill {'username': 'robert', 'email': 'robert153@usrobots.com'}
               with {'username': 'This name is invalid'} %}
@@ -23,7 +25,9 @@ class FormFillExtension(jinja2.ext.Extension):
        </form>
        {% endformfill %}
 
-    will be rendered like below::
+    will be rendered like below:
+
+    .. code-block:: html
 
        <form action="/register" method="POST">
            <input type="text" name="username" class="error" value="robert" />
@@ -32,15 +36,22 @@ class FormFillExtension(jinja2.ext.Extension):
            <input type="email" name="email" value="robert153@usrobots.com" />
        </form>
 
+    **Syntax:**
 
-    :param defaults: a dict-like object that contains default values of
-                     the input field (including ``select`` and ``textarea``)
+    .. code-block:: jinja
+
+       {% formfill <defaults> [with <errors>] %}
+           body
+       {% endformfill %}
+
+    :param defaults: a :term:`mapping` that contains default values of the
+                     input field (including ``select`` and ``textarea``)
                      surrounded in the template tag.
                      Keys contain a value of ``name`` attribute of the input
                      field, and values contain its default value.
-    :param errors: a dict-like object that contains messages for
-                   the error of the input fields. this value will also effect
-                   ``class`` attribute of the input field.
+    :param errors: a :term:`mapping` that contains error messages of the
+                   input fields. this value will also effect ``class``
+                   attribute of the input field.
     :returns: rendered forms
 
     This extension provides the additional variables in the Jinja2 environment:
@@ -54,7 +65,7 @@ class FormFillExtension(jinja2.ext.Extension):
 
     .. attribute:: jinja2.Environment.formfill_error_formatters
 
-       The mapping of error formatters and its name.
+       The :term:`mapping` of error formatters and its name.
        Formatters are functions or callable objects that take the error text
        as a single argument, and returns a formatted text as a string.
 
