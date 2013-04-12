@@ -76,9 +76,13 @@ Reference
 .. autoclass:: formencode_jinja2.formfill.FormFillExtension
 
 
+Further Reading
+---------------
+
 .. toctree::
    :maxdepth: 2
 
+   changes
 
 
 Indices and tables
