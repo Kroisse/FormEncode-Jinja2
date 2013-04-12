@@ -5,6 +5,9 @@ import jinja2.ext
 from jinja2 import nodes
 
 
+__all__ = ['FormFillExtension']
+
+
 class FormFillExtension(jinja2.ext.Extension):
     """Jinja2 extension for filling HTML forms via :mod:`formencode.htmlfill`.
 
@@ -40,8 +43,32 @@ class FormFillExtension(jinja2.ext.Extension):
                    ``class`` attribute of the input field.
     :returns: rendered forms
 
+    This extension provides the additional variables in the Jinja2 environment:
+
+    .. attribute:: jinja2.Environment.formfill_config
+
+       The default rendering configuration of the ``formfill`` tag.
+       This property accepts the same arguments of
+       :func:`formencode.htmlfill.render`, except ``form``, ``defaults``,
+       ``errors`` and ``error_formatters``.
+
+    .. attribute:: jinja2.Environment.formfill_error_formatters
+
+       The mapping of error formatters and its name.
+       Formatters are functions or callable objects that take the error text
+       as a single argument, and returns a formatted text as a string.
+
+       .. seealso:: http://www.formencode.org/en/latest/htmlfill.html#errors
+
     """
     tags = frozenset(['formfill'])
+
+    def __init__(self, environment):
+        super(FormFillExtension, self).__init__(environment)
+        environment.extend(
+            formfill_config={},
+            formfill_error_formatters=dict(DEFAULT_ERROR_FORMATTERS),
+        )
 
     def parse(self, parser):
         token = next(parser.stream)
@@ -70,9 +97,18 @@ class FormFillExtension(jinja2.ext.Extension):
                             "not {0!r}".format(errors))
         rv = caller()
         return formencode.htmlfill.render(
-            rv, defaults, errors, error_formatters=self.ERROR_FORMATTERS)
+            rv, defaults, errors,
+            error_formatters=self.environment.formfill_error_formatters,
+            **self.environment.formfill_config)
 
-    ERROR_FORMATTERS = {
-        'default': lambda msg: '<span class="error-message">{0}</span>'
-                               .format(msg),
-    }
+
+def default_formatter(error):
+    """Escape the error, and wrap it in a span with class ``error-message``"""
+    quoted = formencode.htmlfill.escape_formatter(error)
+    return u'<span class="error-message">{0}</span>'.format(quoted)
+
+
+DEFAULT_ERROR_FORMATTERS = dict(formencode.htmlfill.default_formatter_dict)
+DEFAULT_ERROR_FORMATTERS.update(
+    default=default_formatter,
+)
