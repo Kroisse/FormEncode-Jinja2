@@ -28,7 +28,7 @@ class PyTest(TestCommand):
 
 setup(
     name='FormEncode-Jinja2',
-    version='0.1.1',
+    version='0.1.2-dev',
     author='Eunchong Yu',
     author_email='kroisse@gmail.com',
     url='https://github.com/Kroisse/FormEncode-Jinja2',
