@@ -29,6 +29,56 @@ def test_formfill(jinja_env):
     assert result == expected
 
 
+def test_formfill_name(jinja_env):
+    template = u'''
+    {% formfill defaults
+           with errors -%}
+    <form action="account/signin" method="POST">
+        <input type="text" name="username" />
+        <form:error name="username">
+        <input type="password" name="password" />
+    </form>
+    {%- endformfill %}'''
+    expected = u'''
+    <form action="account/signin" method="POST">
+        <input type="text" name="username" class="error" value="john doe" />
+        <span class="error-message">Invalid Username</span>
+        <input type="password" name="password" value="" />
+    </form>'''
+
+    defaults = {'username':'john doe'}
+    errors = {'username': 'Invalid Username'}
+    result = jinja_env.from_string(template).render(defaults=defaults,
+                                                    errors=errors)
+    assert result == expected
+
+
+def test_formfill_expr(jinja_env):
+    template = u'''
+    {% formfill form.defaults
+           with form.errors -%}
+    <form action="account/signin" method="POST">
+        <input type="text" name="username" />
+        <form:error name="username">
+        <input type="password" name="password" />
+    </form>
+    {%- endformfill %}'''
+    expected = u'''
+    <form action="account/signin" method="POST">
+        <input type="text" name="username" class="error" value="john doe" />
+        <span class="error-message">Invalid Username</span>
+        <input type="password" name="password" value="" />
+    </form>'''
+
+    class Form(object):
+        defaults = {'username':'john doe'}
+        errors = {'username': 'Invalid Username'}
+
+    form = Form()
+    result = jinja_env.from_string(template).render(form=form)
+    assert result == expected
+
+
 def test_formfill_without_errors(jinja_env):
     template = u'''
     {% formfill {'username': 'louis'} -%}

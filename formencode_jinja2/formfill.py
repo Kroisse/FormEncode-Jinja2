@@ -88,16 +88,10 @@ class FormFillExtension(jinja2.ext.Extension):
             errors = parser.parse_expression()
         else:
             errors = nodes.Const({})
-        if isinstance(defaults, nodes.Name):
-            defaults = nodes.Getattr(nodes.ContextReference(),
-                                     defaults.name, self.environment)
-        if isinstance(errors, nodes.Name):
-            errors = nodes.Getattr(nodes.ContextReference(),
-                                   errors.name, self.environment)
         body = parser.parse_statements(['name:endformfill'], drop_needle=True)
         return nodes.CallBlock(
-            self.call_method('_formfill_support', (defaults, errors)),
-            (), (), body).set_lineno(token.lineno)
+            self.call_method('_formfill_support', [defaults, errors]),
+            [], [], body).set_lineno(token.lineno)
 
     def _formfill_support(self, defaults, errors, caller):
         if not isinstance(defaults, collections.Mapping):
