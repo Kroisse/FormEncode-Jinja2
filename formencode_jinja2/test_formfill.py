@@ -208,3 +208,22 @@ def test_with_non_ascii_text(jinja_env):
     </form>'''
     result = jinja_env.from_string(template).render()
     assert result == expected
+
+
+def test_undefined_variables(jinja_env):
+    template = u'''
+    {% formfill formdata with errors -%}
+    <form action="account/signin" method="POST">
+        <input type="text" name="username" />
+        <form:error name="username">
+        <input type="password" name="password" />
+    </form>
+    {%- endformfill %}'''
+    expected = u'''
+    <form action="account/signin" method="POST">
+        <input type="text" name="username" value="" />
+        
+        <input type="password" name="password" value="" />
+    </form>'''
+    result = jinja_env.from_string(template).render()
+    assert result == expected

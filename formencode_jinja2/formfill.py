@@ -94,6 +94,10 @@ class FormFillExtension(jinja2.ext.Extension):
             [], [], body).set_lineno(token.lineno)
 
     def _formfill_support(self, defaults, errors, caller):
+        if isinstance(defaults, jinja2.runtime.Undefined):
+            defaults = {}
+        if isinstance(errors, jinja2.runtime.Undefined):
+            errors = {}
         if not isinstance(defaults, collections.Mapping):
             raise TypeError("argument 'defaults' should be "
                             "collections.Mapping, not {0!r}".format(defaults))
