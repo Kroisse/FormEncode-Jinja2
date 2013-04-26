@@ -11,6 +11,8 @@ In development.
   :class:`{% formfill %} <formencode_jinja2.formfill.FormFillExtension>`,
   rather than variable name or dict literal.
   [:issue:`4` and :pull:`5` by :github:`Renatus <Hardtack>`]
+* Treated an undefined variable in arguments as a empty dict, instead of
+  raising :class:`TypeError`.
 
 
 Version 0.1.1
