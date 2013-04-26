@@ -292,4 +292,5 @@ extlinks = {
               'issue #'),
     'pull': ('https://github.com/Kroisse/FormEncode-Jinja2/pull/%s',
              'pull request #'),
+    'github': ('https://github.com/%s', '@'),
 }

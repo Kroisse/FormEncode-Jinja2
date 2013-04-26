@@ -16,7 +16,7 @@ Released on April 12, 2013.
 * Exposed :attr:`jinja2.Environment.formfill_config` and
   :attr:`jinja2.Environment.formfill_error_formatters`. [:pull:`2`]
 * Fixed an unicode error on the default error formatter.
-  [:issue:`1` by Hyunjun Kim]
+  [:issue:`1` by :github:`Hyunjun Kim <kimjayd>`]
 
 
 Version 0.1.0
