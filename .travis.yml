@@ -6,4 +6,7 @@ python:
 install:
   - pip install .
   - pip install pytest
-script: py.test
+  - pip install flake8
+script:
+  - py.test
+  - flake8 formencode_jinja2/
