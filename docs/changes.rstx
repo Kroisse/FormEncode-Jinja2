@@ -7,6 +7,11 @@ Version 0.1.2
 
 In development.
 
+* Fixed to accept :class:`jinja2.nodes.Expr` as an argument of
+  :class:`{% formfill %} <formencode_jinja2.formfill.FormFillExtension>`,
+  rather than only a variable name.
+  [:issue:`4` and :pull:`5` by :github:`Renatus <Hardtack>`]
+
 
 Version 0.1.1
 -------------
