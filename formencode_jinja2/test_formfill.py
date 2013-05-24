@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 import jinja2
 from formfill import FormFillExtension
