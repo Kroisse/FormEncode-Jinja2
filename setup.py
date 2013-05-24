@@ -7,11 +7,16 @@ except ImportError:
     from setuptools import setup, find_packages  # NOQA
 from setuptools.command.test import test as TestCommand
 import os.path
+import warnings
 
 
 def read_file(filepath):
-    with open(os.path.join(os.path.dirname(__file__), filepath)) as f:
-        return f.read()
+    try:
+        with open(os.path.join(os.path.dirname(__file__), filepath)) as f:
+            return f.read()
+    except IOError:
+        warnings.warn('Could not found {0}'.format(filepath), RuntimeWarning)
+        return ''
 
 
 class PyTest(TestCommand):
